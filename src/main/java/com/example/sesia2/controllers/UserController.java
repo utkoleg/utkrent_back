@@ -2,6 +2,7 @@ package com.example.sesia2.controllers;
 
 import com.example.sesia2.dto.UserRequestDto;
 import com.example.sesia2.dto.UserResponseDto;
+import com.example.sesia2.exceptions.EmailExistsException;
 import com.example.sesia2.exceptions.UsernameExistsException;
 import com.example.sesia2.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +18,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/sign-up")
-    public UUID signNewUser(@RequestBody UserRequestDto userRequestDto) throws UsernameExistsException {
+    public UUID signNewUser(@RequestBody UserRequestDto userRequestDto) throws UsernameExistsException, EmailExistsException {
         return userService.register(userRequestDto);
     }
 

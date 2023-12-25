@@ -4,6 +4,7 @@ import com.example.sesia2.dto.UserRequestDto;
 import com.example.sesia2.dto.UserResponseDto;
 import com.example.sesia2.entities.Role;
 import com.example.sesia2.entities.User;
+import com.example.sesia2.exceptions.EmailExistsException;
 import com.example.sesia2.exceptions.UsernameExistsException;
 import com.example.sesia2.repositories.UserRepository;
 import com.example.sesia2.services.RoleService;
@@ -32,13 +33,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final PasswordEncoder passwordEncoder;
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = userRepository.findByUsername(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.findByEmail(email);
         if(user == null) {
             log.info("User not found in the database");
             throw new UsernameNotFoundException("User not found in the database");
         }else {
-            log.info("User found in the database {}", username);
+            log.info("User found in the database {}", email);
         }
         Collection<SimpleGrantedAuthority> authorities = new ArrayList<>();
         user.getRoles().forEach(role -> authorities.add(new SimpleGrantedAuthority(role.getName())));
@@ -55,10 +56,14 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public UUID register(UserRequestDto userRequestDto) throws UsernameExistsException {
+    public UUID register(UserRequestDto userRequestDto) throws UsernameExistsException, EmailExistsException {
         if (usernameExist(userRequestDto.getUsername())) {
             throw new UsernameExistsException(userRequestDto.getUsername());
-        } else {
+        }
+        if (emailExist(userRequestDto.getEmail())) {
+            throw new EmailExistsException(userRequestDto.getEmail());
+        }
+        else {
             User user = new User();
             user.setUsername(userRequestDto.getUsername());
             user.setEmail(userRequestDto.getEmail());
@@ -79,5 +84,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     private boolean usernameExist(String username) {
         return userRepository.findByUsername(username) != null;
+    }
+
+    private boolean emailExist(String email) {
+        return userRepository.findByEmail(email) != null;
     }
 }

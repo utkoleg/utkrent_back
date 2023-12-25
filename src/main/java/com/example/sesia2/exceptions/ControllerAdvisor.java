@@ -21,4 +21,14 @@ public class ControllerAdvisor extends ResponseEntityExceptionHandler {
 
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
     }
+
+    @ExceptionHandler(EmailExistsException.class)
+    public ResponseEntity<Object> handleEmailExistsException(EmailExistsException ex) {
+
+        Map<String, Object> body = new LinkedHashMap<>();
+        body.put("errorCode", "email_exists");
+        body.put("errorDescription", String.format("Email address '%s' was already registered", ex.getEmail()));
+
+        return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);
+    }
 }
