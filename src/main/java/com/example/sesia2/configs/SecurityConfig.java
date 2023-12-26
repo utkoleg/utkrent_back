@@ -54,7 +54,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }).and();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
 
-        http.authorizeRequests().anyRequest().permitAll();
+        http.authorizeRequests()
+//                .antMatchers("/utkrent/flats/add-flat").hasAuthority("ADMIN")
+                .anyRequest().permitAll();
 //                .antMatchers("/api/v1/auth/login",
 //                        "/api/v1/auth/signup").permitAll()
 //                .antMatchers("/api/v1/images").hasAuthority("USER")
