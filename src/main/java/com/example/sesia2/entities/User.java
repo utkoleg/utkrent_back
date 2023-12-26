@@ -9,6 +9,7 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
 
 @Entity
@@ -37,4 +38,5 @@ public class User {
 
     @ManyToMany(fetch = EAGER)
     private List<Flat> flats;
+
 }

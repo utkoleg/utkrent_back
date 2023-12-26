@@ -9,7 +9,9 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.UUID;
 
+import static javax.persistence.CascadeType.ALL;
 import static javax.persistence.FetchType.EAGER;
+import static javax.persistence.FetchType.LAZY;
 
 @Entity
 @Getter
@@ -41,5 +43,9 @@ public class Flat {
 
     @ManyToMany(fetch = EAGER)
     private List<User> users;
+
+
+    @OneToOne(fetch = LAZY, cascade = ALL)
+    private Image image;
 
 }

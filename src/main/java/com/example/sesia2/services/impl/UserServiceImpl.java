@@ -2,11 +2,13 @@ package com.example.sesia2.services.impl;
 
 import com.example.sesia2.dto.UserRequestDto;
 import com.example.sesia2.dto.UserResponseDto;
+import com.example.sesia2.entities.Flat;
 import com.example.sesia2.entities.Role;
 import com.example.sesia2.entities.User;
 import com.example.sesia2.exceptions.EmailExistsException;
 import com.example.sesia2.exceptions.UsernameExistsException;
 import com.example.sesia2.repositories.UserRepository;
+import com.example.sesia2.services.FlatService;
 import com.example.sesia2.services.RoleService;
 import com.example.sesia2.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -18,10 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 @Slf4j
 @Service
@@ -31,6 +30,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final UserRepository userRepository;
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
+    private final FlatService flatService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -80,6 +80,48 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         Role role = roleService.findByName(roleName);
         user.getRoles().add(role);
         return userRepository.save(user).getId();
+    }
+
+    @Override
+    public void addFlatToUser(String username, UUID flatId) {
+        User user = userRepository.findByUsername(username);
+        Flat flat = flatService.getFlatById(flatId);
+
+        if (user != null && flat != null) {
+            // Check if the flat is not already in the user's list
+            if (!user.getFlats().contains(flat)) {
+                user.getFlats().add(flat);
+                userRepository.save(user);
+                log.info("Flat added to user: {}", user.getUsername());
+            } else {
+                log.info("Flat is already in user's list: {}", user.getUsername());
+                // Handle the case when the flat is already in the user's list
+                // You can throw an exception, return a specific response, or take other actions.
+            }
+        } else {
+            log.error("User or flat not found");
+        }
+    }
+
+    @Override
+    public void removeFlatFromUser(String username, UUID flatId) {
+        User user = userRepository.findByUsername(username);
+        Flat flat = flatService.getFlatById(flatId);
+
+        if (user != null && flat != null) {
+            // Check if the flat is in the user's list
+            if (user.getFlats().contains(flat)) {
+                user.getFlats().remove(flat);
+                userRepository.save(user);
+                log.info("Flat removed from user: {}", user.getUsername());
+            } else {
+                log.info("Flat is not in user's list: {}", user.getUsername());
+                // Handle the case when the flat is not in the user's list
+                // You can throw an exception, return a specific response, or take other actions.
+            }
+        } else {
+            log.error("User or flat not found");
+        }
     }
 
     private boolean usernameExist(String username) {

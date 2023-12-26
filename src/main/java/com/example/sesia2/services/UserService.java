@@ -14,4 +14,8 @@ public interface UserService {
     UUID register(UserRequestDto userRequestDto) throws UsernameExistsException, UsernameExistsException, EmailExistsException;
 
     UUID addRoleToUser(UUID userId, String roleName);
+
+    void addFlatToUser(String username, UUID flatId);
+
+    void removeFlatFromUser(String username, UUID flatId);
 }
