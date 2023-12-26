@@ -19,7 +19,6 @@ import java.util.ArrayList;
 import java.util.List;
 @RequiredArgsConstructor
 @SpringBootApplication
-@ServletComponentScan
 public class Sesia2Application {
 
     public static void main(String[] args) {

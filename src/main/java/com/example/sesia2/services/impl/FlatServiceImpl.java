@@ -53,6 +53,8 @@ public class FlatServiceImpl implements FlatService {
         return flatRepository.save(flat);
     }
 
+
+
     @Override
     public List<FlatResponseDto> getLikedFlats(String username) {
         // Assuming you have a method in your repository to get flats liked by a user

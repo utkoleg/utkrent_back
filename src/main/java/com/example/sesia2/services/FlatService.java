@@ -14,8 +14,8 @@ public interface FlatService {
     Flat getFlatById(UUID id);
 
     Flat getFlatByCity(String city);
-
     Flat addFlat(String name, String city, int bed, int bath, int price, MultipartFile image);
+
 
     List<FlatResponseDto> getLikedFlats(String username);
 }
