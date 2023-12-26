@@ -24,12 +24,13 @@ public class FlatController {
     }
 
     @PostMapping("/add-flat")
-    public Flat addFlat(@RequestParam(name = "flatName") String name,
-                        @RequestParam(name = "flatCity") String city,
-                        @RequestParam(name = "flatBed") int bed,
-                        @RequestParam(name = "flatBath") int bath,
-                        @RequestParam(name = "price") int price,
-                        @RequestParam(name = "image") MultipartFile image) throws Exception{
+    public Flat addFlat(
+            @RequestPart(name = "flatName") String name,
+            @RequestPart(name = "flatCity") String city,
+            @RequestPart(name = "flatBed") int bed,
+            @RequestPart(name = "flatBath") int bath,
+            @RequestPart(name = "price") int price,
+            @RequestPart(name = "image") MultipartFile image) throws Exception {
         System.out.println("Received parameters: " + name + ", " + city + ", " + bed + ", " + bath + ", " + price + ", " + image);
         return flatService.addFlat(name, city, bed, bath, price, image);
     }
