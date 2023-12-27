@@ -55,16 +55,16 @@ public class FlatServiceImpl implements FlatService {
 
 
 
-    @Override
-    public List<FlatResponseDto> getLikedFlats(String username) {
-        // Assuming you have a method in your repository to get flats liked by a user
-        List<Flat> likedFlats = flatRepository.findLikedFlatsByUsername(username);
-
-        return likedFlats.stream()
-                .map(flat -> new FlatResponseDto(flat.getId(), flat.getFlatName(), flat.getFlatCity(),
-                        flat.getFlatBed(), flat.getFlatBath(), flat.getPrice(), ServletUriComponentsBuilder
-                        .fromCurrentContextPath().build().toUriString() + "/api/v1/images/" + flat.getImage().getId()))
-                .collect(Collectors.toList());
-    }
+//    @Override
+//    public List<FlatResponseDto> getLikedFlats(String username) {
+//        // Assuming you have a method in your repository to get flats liked by a user
+//        List<Flat> likedFlats = flatRepository.findLikedFlatsByUsername(username);
+//
+//        return likedFlats.stream()
+//                .map(flat -> new FlatResponseDto(flat.getId(), flat.getFlatName(), flat.getFlatCity(),
+//                        flat.getFlatBed(), flat.getFlatBath(), flat.getPrice(), ServletUriComponentsBuilder
+//                        .fromCurrentContextPath().build().toUriString() + "/api/v1/images/" + flat.getImage().getId()))
+//                .collect(Collectors.toList());
+//    }
 
 }

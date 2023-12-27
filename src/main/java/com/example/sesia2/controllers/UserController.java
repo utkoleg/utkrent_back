@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,23 +39,24 @@ public class UserController {
         return userService.getUser(userId);
     }
 
+    @Transactional
     @PostMapping("/addFlatToUser")
-        public void addFlatToUser(@RequestParam String username,
-                                  @RequestParam UUID flatId){
-        userService.addFlatToUser(username, flatId);
+    public void addFlatToUser(@RequestParam UUID userId,
+                              @RequestParam UUID flatId) {
+        userService.addFlatToUser(userId, flatId);
         System.out.println("Flat was added");
     }
 
     @PostMapping("/removeFlatFromUser")
-    public void removeFlatFromUser(@RequestParam String username,
+    public void removeFlatFromUser(@RequestParam UUID userId,
                                    @RequestParam UUID flatId) {
-        userService.removeFlatFromUser(username, flatId);
+        userService.removeFlatFromUser(userId, flatId);
         System.out.println("Flat was removed");
     }
 
-    @GetMapping("/liked-flats/{username}")
-    public ResponseEntity<List<FlatResponseDto>> getLikedFlats(@PathVariable String username) {
-        List<FlatResponseDto> likedFlats = flatService.getLikedFlats(username);
+    @GetMapping("/liked-flats/{id}")
+    public ResponseEntity<List<FlatResponseDto>> getLikedFlats(@PathVariable UUID id) {
+        List<FlatResponseDto> likedFlats = userService.getLikedFlats(id);
         return ResponseEntity.ok(likedFlats);
     }
 

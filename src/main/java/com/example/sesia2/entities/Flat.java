@@ -41,11 +41,7 @@ public class Flat {
     @Column
     private int price;
 
-    @ManyToMany(fetch = EAGER)
-    private List<User> users;
-
-
-    @OneToOne(fetch = LAZY, cascade = ALL)
+    @OneToOne(fetch = EAGER, cascade = ALL)
     private Image image;
 
 }

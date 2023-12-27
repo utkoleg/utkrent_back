@@ -17,5 +17,5 @@ public interface FlatService {
     Flat addFlat(String name, String city, int bed, int bath, int price, MultipartFile image);
 
 
-    List<FlatResponseDto> getLikedFlats(String username);
+//    List<FlatResponseDto> getLikedFlats(String username);
 }

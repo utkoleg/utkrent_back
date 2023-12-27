@@ -13,7 +13,7 @@ public interface FlatRepository extends JpaRepository<Flat, UUID> {
 
     Flat findFlatById(UUID id);
 
-    @Query("SELECT f FROM Flat f JOIN f.users u WHERE u.username = :username")
-    List<Flat> findLikedFlatsByUsername(@Param("username") String username);
+//    @Query("SELECT f FROM Flat f JOIN f.users u WHERE u.username = :username")
+//    List<Flat> findLikedFlatsByUsername(@Param("username") String username);
 
 }

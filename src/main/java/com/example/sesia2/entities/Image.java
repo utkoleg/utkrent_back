@@ -2,6 +2,7 @@ package com.example.sesia2.entities;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
 import java.util.UUID;
@@ -25,5 +26,6 @@ public class Image {
 
     @Lob
     @Column(length = 10485760)
+//    @Type(type = "org.hibernate.type.ImageType")
     private byte[] data;
 }

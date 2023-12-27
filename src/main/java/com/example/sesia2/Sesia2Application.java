@@ -28,20 +28,20 @@ public class Sesia2Application {
     private final UserService userService;
     private final UserRepository userRepository;
 
-    @Bean
-    public CommandLineRunner CommandLineRunnerBean(RoleRepository roleRepository) {
-        return (args) -> {
-            Role role = new Role();
-            role.setName("USER");
-            Role role1 = new Role();
-            role1.setName("ADMIN");
-            roleRepository.save(role1);
-            roleRepository.save(role);
-
-            List<Flat> flats = new ArrayList<>();
-            UserRequestDto user = new UserRequestDto("admin", "admin", "admin");
-            userService.register(user);
-            userService.addRoleToUser(userRepository.findByEmail(user.getEmail()).getId(), "ADMIN");
-        };
-    }
+//    @Bean
+//    public CommandLineRunner CommandLineRunnerBean(RoleRepository roleRepository) {
+//        return (args) -> {
+//            Role role = new Role();
+//            role.setName("USER");
+//            Role role1 = new Role();
+//            role1.setName("ADMIN");
+//            roleRepository.save(role1);
+//            roleRepository.save(role);
+//
+//            List<Flat> flats = new ArrayList<>();
+//            UserRequestDto user = new UserRequestDto("admin", "admin", "admin");
+//            userService.register(user);
+//            userService.addRoleToUser(userRepository.findByEmail(user.getEmail()).getId(), "ADMIN");
+//        };
+//    }
 }

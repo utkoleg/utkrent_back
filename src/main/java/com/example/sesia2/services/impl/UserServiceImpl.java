@@ -1,5 +1,6 @@
 package com.example.sesia2.services.impl;
 
+import com.example.sesia2.dto.FlatResponseDto;
 import com.example.sesia2.dto.UserRequestDto;
 import com.example.sesia2.dto.UserResponseDto;
 import com.example.sesia2.entities.Flat;
@@ -7,6 +8,7 @@ import com.example.sesia2.entities.Role;
 import com.example.sesia2.entities.User;
 import com.example.sesia2.exceptions.EmailExistsException;
 import com.example.sesia2.exceptions.UsernameExistsException;
+import com.example.sesia2.mapper.FlatResponseMapper;
 import com.example.sesia2.repositories.UserRepository;
 import com.example.sesia2.services.FlatService;
 import com.example.sesia2.services.RoleService;
@@ -31,6 +33,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     private final RoleService roleService;
     private final PasswordEncoder passwordEncoder;
     private final FlatService flatService;
+    private final FlatResponseMapper flatResponseMapper;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -82,21 +85,19 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return userRepository.save(user).getId();
     }
 
+
     @Override
-    public void addFlatToUser(String username, UUID flatId) {
-        User user = userRepository.findByUsername(username);
+    public void addFlatToUser(UUID userId, UUID flatId) {
+        User user = userRepository.findById(userId).orElseThrow();
         Flat flat = flatService.getFlatById(flatId);
 
         if (user != null && flat != null) {
-            // Check if the flat is not already in the user's list
             if (!user.getFlats().contains(flat)) {
                 user.getFlats().add(flat);
                 userRepository.save(user);
                 log.info("Flat added to user: {}", user.getUsername());
             } else {
                 log.info("Flat is already in user's list: {}", user.getUsername());
-                // Handle the case when the flat is already in the user's list
-                // You can throw an exception, return a specific response, or take other actions.
             }
         } else {
             log.error("User or flat not found");
@@ -104,8 +105,8 @@ public class UserServiceImpl implements UserService, UserDetailsService {
     }
 
     @Override
-    public void removeFlatFromUser(String username, UUID flatId) {
-        User user = userRepository.findByUsername(username);
+    public void removeFlatFromUser(UUID userId, UUID flatId) {
+        User user = userRepository.findById(userId).orElseThrow();
         Flat flat = flatService.getFlatById(flatId);
 
         if (user != null && flat != null) {
@@ -122,6 +123,15 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         } else {
             log.error("User or flat not found");
         }
+    }
+
+    @Override
+    public List<FlatResponseDto> getLikedFlats(UUID id) {
+        User user = userRepository.findById(id).orElseThrow(() -> new RuntimeException("user not found"));
+        return user.getFlats()
+                .stream()
+                .map(flatResponseMapper)
+                .toList();
     }
 
     private boolean usernameExist(String username) {
