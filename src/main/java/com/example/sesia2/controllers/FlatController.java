@@ -35,3 +35,4 @@ public class FlatController {
         return flatService.addFlat(name, city, bed, bath, price, image);
     }
 }
+

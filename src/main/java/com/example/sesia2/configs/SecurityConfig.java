@@ -54,9 +54,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         }).and();
         http.sessionManagement().sessionCreationPolicy(STATELESS);
 
-        http.authorizeRequests()
-//                .antMatchers("/utkrent/flats/add-flat").hasAuthority("ADMIN")
-                .anyRequest().permitAll();
+        http.authorizeRequests().anyRequest().permitAll();
 //                .antMatchers("/api/v1/auth/login",
 //                        "/api/v1/auth/signup").permitAll()
 //                .antMatchers("/api/v1/images").hasAuthority("USER")
@@ -68,7 +66,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public CustomAuthenticationFilter jwtAuthorizationFilter() throws Exception {
         CustomAuthenticationFilter jwtAuthenticationFilter = new CustomAuthenticationFilter(authenticationManager(), jwtProperties, userRepository);
-        jwtAuthenticationFilter.setFilterProcessesUrl("/utkrent/login");
+        jwtAuthenticationFilter.setFilterProcessesUrl("/api/v1/auth/login");
         return jwtAuthenticationFilter;
     }
 
